@@ -1,0 +1,6 @@
+# Name,	    Type,	SubType,	Offset,	    Size,	Flags
+# 4MB flash: 1.94 MiB each for the app and LittleFS, plus NVS and coredump partitions
+nvs,        data,     nvs,        0x9000,     0x5000
+factory,    app,      factory,    0x10000,    0x1F0000
+spiffs,     data,     spiffs,     0x200000,   0x1F0000
+coredump,   data,     coredump,   0x3F0000,   0x10000

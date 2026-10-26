@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "Jason2866.esp-decoder",
+        "jeff-hykin.better-cpp-syntax",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "pioarduino.pioarduino-ide",
+        "platformio.platformio-ide",
+        "streetsidesoftware.code-spell-checker"
+    ],
+    "unwantedRecommendations": [
+        "ms-vscode.cpptools-extension-pack",
+        "pioarduino.pioarduino-ide"
+    ]
+}

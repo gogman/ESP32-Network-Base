@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Device Settings</title>
+  <link href="/css/" rel="stylesheet">
+  <script>
+    // Runs in <head>, before anything is drawn, so a dark theme never flashes light first. The "js" class lets the
+    // stylesheet hide the .js-only parts (uptime, theme buttons) where scripts don't run, such as the iOS portal.
+    document.documentElement.classList.add("js");
+
+    // The saved theme choice: light, dark or auto. Storage can be blocked (private browsing), so fall back to auto.
+    function storedTheme() {
+      try { return localStorage.getItem("theme") || "auto"; } catch (error) { return "auto"; }
+    }
+
+    // Bootstrap switches its colours with the data-bs-theme attribute on <html>; auto follows the system setting.
+    function applyTheme(choice) {
+      var dark = choice == "dark" || (choice == "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-bs-theme", dark ? "dark" : "light");
+    }
+
+    applyTheme(storedTheme());
+  </script>
+</head>
+
+<body class="bg-body-tertiary">
+  <header class="bg-primary text-white py-3 mb-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <h1 class="h4 mb-0 text-white">Device Settings</h1>
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <span class="js-only">Uptime: <span id="uptime">...</span></span>
+        <div class="btn-group btn-group-sm js-only" role="group" aria-label="Colour theme">
+          <input type="radio" class="btn-check" name="theme" id="themeLight" value="light" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeLight" title="Light">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+            </svg>
+            <span class="visually-hidden">Light</span>
+          </label>
+          <input type="radio" class="btn-check" name="theme" id="themeDark" value="dark" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeDark" title="Dark">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+            </svg>
+            <span class="visually-hidden">Dark</span>
+          </label>
+          <input type="radio" class="btn-check" name="theme" id="themeAuto" value="auto" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeAuto" title="Auto: follow the system setting">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4q0 1 .25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75Q6 13 6 12H2s-2 0-2-2zm1.398-.855a.76.76 0 0 0-.254.302A1.5 1.5 0 0 0 1 4.01V10c0 .325.078.502.145.602q.105.156.302.254a1.5 1.5 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.76.76 0 0 0 .254-.302 1.5 1.5 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.76.76 0 0 0-.302-.254A1.5 1.5 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145" />
+            </svg>
+            <span class="visually-hidden">Auto</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <p><a href="/" class="mb-3">Home</a> / <a href="/admin/network/" class="mb-3">Network Settings</a><a href="#" onclick="forceLogout(); return false;" class="float-end">Log Out</a></p>
+
+    <p id="status" class="text-body-secondary mb-4 text-center"></p>
+
+    <div id="message" class="d-none" role="alert"></div>
+
+    <form id="adminForm">
+      <!-- Disabled until the current settings have loaded. -->
+      <fieldset id="fields" disabled>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Admin Login</h2>
+
+          <label class="form-label" for="admin_user">User Name</label>
+          <input class="form-control mb-3" type="text" id="admin_user" name="admin_user" maxlength="32"
+            pattern="[^:]+" autocomplete="username" required>
+
+          <label class="form-label" for="admin_pass">Password</label>
+          <input class="form-control mb-3" type="password" id="admin_pass" name="admin_pass" minlength="8"
+            maxlength="63" autocomplete="new-password" placeholder="">
+
+          <label class="form-label" for="admin_pass_confirm">Confirm password</label>
+          <input class="form-control" type="password" id="admin_pass_confirm" name="admin_pass_confirm" maxlength="63"
+            autocomplete="new-password">
+          <div class="invalid-feedback">The passwords don't match.</div>
+          <div class="form-text">The user name can't contain a colon. Leave the password blank to keep the current
+            one, or enter a new one of 8 to 63 characters.</div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Device Information</h2>
+          <label class="form-label" for="device_name">Name</label>
+          <input class="form-control" type="text" id="device_name" name="device_name" maxlength="32"
+            pattern="[A-Za-z0-9]([A-Za-z0-9\-]*[A-Za-z0-9])?" required>
+          <div class="form-text">Letters, digits and hyphens. When joined to a network the device answers at
+            http://<em>device-name</em>/</div>
+        </div>
+      </div>
+      <button class="btn btn-primary w-100 mb-4" type="submit">Save and restart</button>
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- Placed before the script, so the script can show it as soon as the settings start loading. -->
+  <div id='loading' class='position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center'
+    role='status' aria-live='polite'>
+    <div class='d-flex flex-column align-items-center gap-2 bg-body text-body border rounded-3 shadow px-4 py-3'>
+      <div class='spinner-border text-primary' aria-hidden='true'></div>
+      <div>Loading...</div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var themeChoice = storedTheme();
+
+    function element(id) { return document.getElementById(id); }
+
+    // Shows or hides the "Loading..." overlay while the settings are fetched or saved.
+    function showLoading(on) { element("loading").classList.toggle("show", on); }
+
+    // Tick the button for the saved choice, and save and apply a new choice when another button is picked.
+    document.querySelectorAll("input[name=theme]").forEach(function (input) {
+      input.checked = input.value == themeChoice;
+      input.onchange = function () {
+        themeChoice = input.value;
+        try { localStorage.setItem("theme", themeChoice); } catch (error) { }
+        applyTheme(themeChoice);
+      };
+    });
+
+    // In auto mode, follow the system when it switches between light and dark while the page is open.
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+      if (themeChoice == "auto") applyTheme("auto");
+    });
+
+    function twoDigits(number) { return (number < 10 ? "0" : "") + number; }
+
+    // Seconds as "<days>d h:mm:ss".
+    function formatUptime(seconds) {
+      var minutes = Math.floor(seconds / 60), hours = Math.floor(minutes / 60);
+      return Math.floor(hours / 24) + "d " + hours % 24 + ":" + twoDigits(minutes % 60) + ":" + twoDigits(seconds % 60);
+    }
+
+    // Browsers keep sending a basic authentication login until they are closed; there is no way to forget it. A
+    // request with a deliberately wrong login replaces the remembered one, so the next admin page asks again.
+    function forceLogout() {
+      var req = new XMLHttpRequest();
+      req.addEventListener("loadend", function () { window.location.href = "/"; });
+      req.open("GET", "/admin/", true, "logout", "logout");
+      req.send();
+    }
+
+    // The device sends its uptime once; from then on the page counts locally, so the clock ticks without asking the
+    // device every second. performance.now() is used because, unlike the wall clock, it never jumps.
+    function startUptime(seconds) {
+      var started = performance.now() - seconds * 1000;
+      function tick() {
+        element("uptime").textContent = formatUptime(Math.floor((performance.now() - started) / 1000));
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // no-store: always ask the device, never reuse an earlier answer.
+    fetch("/api/uptime", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.text() : Promise.reject(response.status); })
+      .then(function (text) { startUptime(parseInt(text, 10)); })
+      .catch(function () { element("uptime").textContent = "unavailable"; });
+
+    // ---- Settings form ----
+
+    var form = element("adminForm"), fields = element("fields");
+
+    // Shows a Bootstrap alert above the form. `kind` is "success" or "danger".
+    function showMessage(kind, text) {
+      var box = element("message");
+      box.className = "alert alert-" + kind;
+      box.textContent = text;
+    }
+
+    // Marks the confirmation field red while it differs from the password. Returns whether they match. The device
+    // checks this again, since the browser check can be bypassed.
+    function passwordsMatch() {
+      var confirm = element("admin_pass_confirm");
+      var ok = element("admin_pass").value == confirm.value;
+      confirm.classList.toggle("is-invalid", !ok);
+      return ok;
+    }
+
+    element("admin_pass_confirm").addEventListener("input", passwordsMatch);
+
+    // Saving: the browser has already checked the field rules (required, pattern, length) before this runs. The form
+    // is sent with fetch instead of a normal submit, so the page stays put and can show the device's reply.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!passwordsMatch()) return;
+
+      // Read the fields before disabling them; disabled fields aren't included.
+      var body = new URLSearchParams(new FormData(form));
+      fields.disabled = true;
+      showLoading(true);
+
+      fetch("/api/admin/", { method: "POST", body: body, cache: "no-store" })
+        // Both success and error replies carry JSON, so read the body either way and keep the status alongside it.
+        .then(function (response) {
+          return response.json().then(function (data) { return { ok: response.ok, data: data }; });
+        })
+        .then(function (result) {
+          if (result.ok) {
+            // The device is restarting, so the form stays disabled.
+            showMessage("success", result.data.message);
+          } else {
+            showMessage("danger", result.data.error);
+            fields.disabled = false;
+          }
+        })
+        .catch(function () {
+          showMessage("danger", "The device didn't answer. Check the connection and try again.");
+          fields.disabled = false;
+        })
+        .finally(function () { showLoading(false); });
+    });
+
+    // Loading: fetch the current settings, fill the form and enable it. The password fields stay empty; the device
+    // never sends the password back.
+    showLoading(true);
+    fetch("/api/admin/", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.json() : Promise.reject(response.status); })
+      .then(function (data) {
+        element("status").textContent = data.status;
+        element("device_name").value = data.device_name;
+        element("admin_user").value = data.admin_user;
+        fields.disabled = false;
+        element("admin_user").focus();
+      })
+      .catch(function () { showMessage("danger", "The settings couldn't be loaded. Reload the page to try again."); })
+      .finally(function () { showLoading(false); });
+  </script>
+
+</body>
+
+</html>

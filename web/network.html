@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Network Settings</title>
+  <link href="/css/" rel="stylesheet">
+  <script>
+    // Runs in <head>, before anything is drawn, so a dark theme never flashes light first. The "js" class lets the
+    // stylesheet hide the .js-only parts (uptime, theme buttons) where scripts don't run, such as the iOS portal.
+    document.documentElement.classList.add("js");
+
+    // The saved theme choice: light, dark or auto. Storage can be blocked (private browsing), so fall back to auto.
+    function storedTheme() {
+      try { return localStorage.getItem("theme") || "auto"; } catch (error) { return "auto"; }
+    }
+
+    // Bootstrap switches its colours with the data-bs-theme attribute on <html>; auto follows the system setting.
+    function applyTheme(choice) {
+      var dark = choice == "dark" || (choice == "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-bs-theme", dark ? "dark" : "light");
+    }
+
+    applyTheme(storedTheme());
+  </script>
+</head>
+
+<body class="bg-body-tertiary">
+  <header class="bg-primary text-white py-3 mb-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <h1 class="h4 mb-0 text-white">Network Settings</h1>
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <span class="js-only">Uptime: <span id="uptime">...</span></span>
+        <div class="btn-group btn-group-sm js-only" role="group" aria-label="Colour theme">
+          <input type="radio" class="btn-check" name="theme" id="themeLight" value="light" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeLight" title="Light">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+            </svg>
+            <span class="visually-hidden">Light</span>
+          </label>
+          <input type="radio" class="btn-check" name="theme" id="themeDark" value="dark" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeDark" title="Dark">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286" />
+            </svg>
+            <span class="visually-hidden">Dark</span>
+          </label>
+          <input type="radio" class="btn-check" name="theme" id="themeAuto" value="auto" autocomplete="off">
+          <label class="btn btn-outline-light" for="themeAuto" title="Auto: follow the system setting">
+            <svg class="bi" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M0 4s0-2 2-2h12s2 0 2 2v6s0 2-2 2h-4q0 1 .25 1.5H11a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1h.75Q6 13 6 12H2s-2 0-2-2zm1.398-.855a.76.76 0 0 0-.254.302A1.5 1.5 0 0 0 1 4.01V10c0 .325.078.502.145.602q.105.156.302.254a1.5 1.5 0 0 0 .538.143L2.01 11H14c.325 0 .502-.078.602-.145a.76.76 0 0 0 .254-.302 1.5 1.5 0 0 0 .143-.538L15 9.99V4c0-.325-.078-.502-.145-.602a.76.76 0 0 0-.302-.254A1.5 1.5 0 0 0 13.99 3H2c-.325 0-.502.078-.602.145" />
+            </svg>
+            <span class="visually-hidden">Auto</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <p><a href="/" class="mb-3">Home</a> / <a href="/admin/" class="mb-3">Device Settings</a><a href="#"
+        onclick="forceLogout(); return false;" class="float-end">Log Out</a></p>
+
+    <p id="status" class="text-body-secondary mb-4 text-center"></p>
+
+    <div id="message" class="d-none" role="alert"></div>
+
+    <form id="networkForm">
+      <!-- Disabled until the current settings have loaded. -->
+      <fieldset id="fields" disabled>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Network mode</h2>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="mode" id="mode-ap" value="ap">
+            <label class="form-check-label" for="mode-ap">Access point &mdash; run its own Wi-Fi network with the
+              portal</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="mode" id="mode-sta" value="sta">
+            <label class="form-check-label" for="mode-sta">Join a Wi-Fi network</label>
+          </div>
+          <div class="form-text">If joining the network fails, the device falls back to access point mode.</div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Wi-Fi network to join</h2>
+          <label class="form-label" for="sta_ssid">Network name (SSID)</label>
+          <input class="form-control mb-3" type="text" id="sta_ssid" name="sta_ssid" maxlength="32">
+
+          <label class="form-label" for="sta_pass">Password</label>
+          <input class="form-control mb-3" type="password" id="sta_pass" name="sta_pass" maxlength="63"
+            autocomplete="new-password" placeholder="">
+
+          <label class="form-label" for="sta_pass_confirm">Confirm password</label>
+          <input class="form-control" type="password" id="sta_pass_confirm" name="sta_pass_confirm" maxlength="63"
+            autocomplete="new-password">
+          <div class="invalid-feedback">The passwords don't match.</div>
+
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="sta_open" id="sta_open" value="1">
+            <label class="form-check-label" for="sta_open">Open network (no password)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Access point</h2>
+          <label class="form-label" for="ap_ssid">Access point name (SSID)</label>
+          <input class="form-control mb-3" type="text" id="ap_ssid" name="ap_ssid" maxlength="32" required>
+
+          <div class="row g-3">
+            <div class="col-sm-4">
+              <label class="form-label" for="wifi_channel">Wi-Fi channel</label>
+              <input class="form-control" type="number" id="wifi_channel" name="wifi_channel" required>
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label" for="max_clients">Maximum clients</label>
+              <input class="form-control" type="number" id="max_clients" name="max_clients" required>
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label" for="dns_interval">DNS interval</label>
+              <select class="form-select" id="dns_interval" name="dns_interval"></select>
+            </div>
+          </div>
+          <div class="form-text">Channels 1, 6 and 11 don't overlap; 12 and 13 aren't allowed in North America. A
+            shorter DNS interval makes pages load faster on the portal at the cost of more CPU time.</div>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h5 card-title">Radio</h2>
+          <div class="row g-3">
+            <div class="col-sm-7">
+              <label class="form-label" for="country">Country</label>
+              <select class="form-select" id="country" name="country"></select>
+            </div>
+            <div class="col-sm-5">
+              <label class="form-label" for="tx_power">Transmit power</label>
+              <select class="form-select" id="tx_power" name="tx_power"></select>
+            </div>
+          </div>
+          <div class="form-text">The country sets which channels and power levels are legal; choose where the device
+            is used. Lower transmit power shrinks the range of the access point and reduces power use.</div>
+        </div>
+      </div>
+      <button class="btn btn-primary w-100 mb-4" type="submit">Save and restart</button>
+      </fieldset>
+    </form>
+  </div>
+
+  <!-- Placed before the script, so the script can show it as soon as the settings start loading. -->
+  <div id='loading' class='position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center'
+    role='status' aria-live='polite'>
+    <div class='d-flex flex-column align-items-center gap-2 bg-body text-body border rounded-3 shadow px-4 py-3'>
+      <div class='spinner-border text-primary' aria-hidden='true'></div>
+      <div>Loading...</div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var themeChoice = storedTheme();
+
+    function element(id) { return document.getElementById(id); }
+
+    // Shows or hides the "Loading..." overlay while the settings are fetched or saved.
+    function showLoading(on) { element("loading").classList.toggle("show", on); }
+
+    // Tick the button for the saved choice, and save and apply a new choice when another button is picked.
+    document.querySelectorAll("input[name=theme]").forEach(function (input) {
+      input.checked = input.value == themeChoice;
+      input.onchange = function () {
+        themeChoice = input.value;
+        try { localStorage.setItem("theme", themeChoice); } catch (error) { }
+        applyTheme(themeChoice);
+      };
+    });
+
+    // In auto mode, follow the system when it switches between light and dark while the page is open.
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+      if (themeChoice == "auto") applyTheme("auto");
+    });
+
+    function twoDigits(number) { return (number < 10 ? "0" : "") + number; }
+
+    // Seconds as "<days>d h:mm:ss".
+    function formatUptime(seconds) {
+      var minutes = Math.floor(seconds / 60), hours = Math.floor(minutes / 60);
+      return Math.floor(hours / 24) + "d " + hours % 24 + ":" + twoDigits(minutes % 60) + ":" + twoDigits(seconds % 60);
+    }
+
+    // Browsers keep sending a basic authentication login until they are closed; there is no way to forget it. A
+    // request with a deliberately wrong login replaces the remembered one, so the next admin page asks again.
+    function forceLogout() {
+      var req = new XMLHttpRequest();
+      req.addEventListener("loadend", function () { window.location.href = "/"; });
+      req.open("GET", "/admin/", true, "logout", "logout");
+      req.send();
+    }
+
+    // The device sends its uptime once; from then on the page counts locally, so the clock ticks without asking the
+    // device every second. performance.now() is used because, unlike the wall clock, it never jumps.
+    function startUptime(seconds) {
+      var started = performance.now() - seconds * 1000;
+      function tick() {
+        element("uptime").textContent = formatUptime(Math.floor((performance.now() - started) / 1000));
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    // no-store: always ask the device, never reuse an earlier answer.
+    fetch("/api/uptime", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.text() : Promise.reject(response.status); })
+      .then(function (text) { startUptime(parseInt(text, 10)); })
+      .catch(function () { element("uptime").textContent = "unavailable"; });
+
+    // ---- Settings form ----
+
+    var form = element("networkForm"), fields = element("fields"), countries = [];
+
+    // Shows a Bootstrap alert above the form. `kind` is "success" or "danger".
+    function showMessage(kind, text) {
+      var box = element("message");
+      box.className = "alert alert-" + kind;
+      box.textContent = text;
+    }
+
+    // Replaces a drop-down's options; `items` is a list of [value, label] pairs.
+    function fillOptions(select, items) {
+      select.replaceChildren();
+      items.forEach(function (item) { select.add(new Option(item[1], item[0])); });
+    }
+
+    // The country limits the channels an access point may use.
+    function limitChannel() {
+      var code = element("country").value;
+      var country = countries.find(function (c) { return c.code == code; });
+      if (country) element("wifi_channel").max = country.max_channel;
+    }
+
+    // With "Open network" ticked the password fields don't apply.
+    function updateOpen() {
+      var open = element("sta_open").checked;
+      element("sta_pass").disabled = open;
+      element("sta_pass_confirm").disabled = open;
+    }
+
+    // Marks the confirmation field red while it differs from the password. Returns whether they match; with "Open
+    // network" ticked there is no password, so they always do. The device checks this again.
+    function passwordsMatch() {
+      var confirm = element("sta_pass_confirm");
+      var ok = element("sta_open").checked || element("sta_pass").value == confirm.value;
+      confirm.classList.toggle("is-invalid", !ok);
+      return ok;
+    }
+
+    // Fills the form from GET /api/network/. The drop-downs and number limits are built from the lists the device
+    // sent, so the page always offers exactly what the firmware accepts, even after the firmware changes them.
+    function fillForm(data) {
+      element("status").textContent = data.status;
+      countries = data.countries;
+
+      var dns = data.limits.dns_interval, dnsItems = [];
+      for (var ms = dns[0]; ms <= dns[1]; ms++) dnsItems.push([ms, ms + " ms"]);
+      fillOptions(element("dns_interval"), dnsItems);
+      fillOptions(element("country"), countries.map(function (c) { return [c.code, c.name]; }));
+      fillOptions(element("tx_power"), data.tx_power_levels.map(function (l) { return [l.value, l.label]; }));
+
+      ["wifi_channel", "max_clients"].forEach(function (name) {
+        element(name).min = data.limits[name][0];
+        element(name).max = data.limits[name][1];
+      });
+
+      // The device names each value after its form field. Setting .value on the "mode" radio group ticks the button
+      // with that value. The drop-downs are filled first, above, so their values have an option to select.
+      Object.keys(data.values).forEach(function (name) { form.elements[name].value = data.values[name]; });
+      limitChannel();
+
+      // The saved password is never sent back. The placeholder says whether one exists; a blank field keeps it.
+
+      element("sta_pass").placeholder = data.sta_pass_set ? "Leave blank to keep the saved password" : "";
+      element("sta_open").checked = false;
+      updateOpen();
+    }
+
+    element("country").addEventListener("change", limitChannel);
+    element("sta_open").addEventListener("change", updateOpen);
+    element("sta_pass_confirm").addEventListener("input", passwordsMatch);
+
+    // Saving: the browser has already checked the field rules (required, min, max, length) before this runs. The form
+    // is sent with fetch instead of a normal submit, so the page stays put and can show the device's reply.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!passwordsMatch()) return;
+
+      // Read the fields before disabling them; disabled fields aren't included.
+      var body = new URLSearchParams(new FormData(form));
+      fields.disabled = true;
+      showLoading(true);
+
+      fetch("/api/network/", { method: "POST", body: body, cache: "no-store" })
+        // Both success and error replies carry JSON, so read the body either way and keep the status alongside it.
+        .then(function (response) {
+          return response.json().then(function (data) { return { ok: response.ok, data: data }; });
+        })
+        .then(function (result) {
+          if (result.ok) {
+            // The device is restarting, so the form stays disabled.
+            showMessage("success", result.data.message);
+          } else {
+            showMessage("danger", result.data.error);
+            fields.disabled = false;
+          }
+        })
+        .catch(function () {
+          showMessage("danger", "The device didn't answer. Check the connection and try again.");
+          fields.disabled = false;
+        })
+        .finally(function () { showLoading(false); });
+    });
+
+    // Loading: fetch the current settings and the choices, fill the form and enable it.
+    showLoading(true);
+    fetch("/api/network/", { cache: "no-store" })
+      .then(function (response) { return response.ok ? response.json() : Promise.reject(response.status); })
+      .then(function (data) {
+        fillForm(data);
+        fields.disabled = false;
+      })
+      .catch(function () { showMessage("danger", "The settings couldn't be loaded. Reload the page to try again."); })
+      .finally(function () { showLoading(false); });
+  </script>
+
+</body>
+
+</html>
