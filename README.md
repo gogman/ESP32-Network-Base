@@ -130,3 +130,7 @@ erase the flash (`pio run -t erase`), then upload the firmware and the filesyste
 - [ESPAsyncWebServer](https://github.com/ESP32Async/ESPAsyncWebServer) and [AsyncTCP](https://github.com/ESP32Async/AsyncTCP)
 - [ArduinoJson](https://arduinojson.org/) 7
 - [Bootstrap](https://getbootstrap.com/) 5, bundled in [web/bootstrap.css](web/bootstrap.css)
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
