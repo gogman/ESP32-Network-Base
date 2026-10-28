@@ -7,7 +7,7 @@
 #include <Arduino.h>
 
 // Firmware version, printed in the serial log at start-up. Bump it with every release.
-#define APP_VERSION "0.5.402"
+#define APP_VERSION "0.5.408"
 
 // ---------------------------------------------------------------------------------------------------------------
 // Storage
